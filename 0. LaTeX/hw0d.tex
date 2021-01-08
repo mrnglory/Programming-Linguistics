@@ -1,0 +1,60 @@
+\documentclass{article}
+
+\usepackage{amsmath, amssymb}
+\usepackage{kotex}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{helvet}
+\usepackage{graphicx}
+
+\begin{document}
+
+\title{hw0}
+\author{B711222 박조은}
+\date{2019 03 15}
+\maketitle
+
+\section{자기소개}
+안녕하세요 이번 2019학년도 1학기부터 컴퓨터공학전공에 편입학하여 재학하게 된 17학번 박조은입니다.
+\section{조교가 내주는 수식작성}
+
+$
+E[X^2]\\$\\$
+= \sum_{x=R_X}x^2px(x)\\$\\$
+= \sum_{x=0}^{\infty}x^2exp(-\lambda )\frac{1}{x}
+\lambda^x\\$\\$
+= 0 + \sum_{x=1}^{\infty}x^2exp(-\lambda )\frac{1}{x!}\lambda^x
+\qquad (the\ first\ term\ of\ the\ sum\ is\ zero\ since\ x = 0)\\$\\$
+= \sum_{y=0}^{\infty}(y+1)
+^2exp(-\lambda )\frac{1}{(y+1)!}\lambda^{y+1}
+\qquad (by\ changing\ variable:\ y = x - 1)\\$\\$
+\sum_{y=0}^{\infty}(y+1)
+^2exp(-\lambda )\frac{1}{(y+1)y!}\lambda\lambda^y
+\qquad (since\ (y + 1)!\ = (y + 1)y!)$\\$
+=\lambda \sum_{y=0}^{\infty}(y+1)exp(-\lambda )\frac{1}{y!}{\lambda }^{y}\\$\\$
+=\lambda \sum_{y=0}^{\infty}(y+1)pY(y)\\ 
+\qquad (pY\ is\ the\ pmf\ of\ a\ Poisson\ r.v.\ with\ parameter\ \lambda)$\\$
+=\lambda \begin{Bmatrix}
+{ \sum_{y=0}^{\infty}ypY(y)+\sum_{y=0}^{\infty}pY(y) }
+\end{Bmatrix}\\ $\\$
+=\lambda \begin{Bmatrix} E[Y] +1 \end{Bmatrix}
+\qquad (the\ sum\ of\ a\ pmf\ over\ its\ support\ is\ 1)$\\$\\
+=\lambda \begin{Bmatrix} \lambda +1 \end{Bmatrix}\
+\qquad (expected value of a Poisson r.v. with parameter \lambda is \lambda)$\\$\\
+=\lambda ^{2}+\lambda \\$\\
+E[X]^{2}=\lambda ^{2}\\$\\$
+Var[X]=E[X^{2}]-E[X]^{2}=\lambda ^{2}+\lambda -\lambda ^{2}=\lambda \\$
+
+\subsection{수식의 의미}
+푸아송 분포의 평균과 분산을 의미한다.
+\section{가장 좋아하는 그림을 문서에 넣기}
+\begin{figure} [h]
+\centering 
+\includegraphics[width=\textwidth]{1.jpeg} 
+\caption{World Wide Star BTS} 
+\label{fig1}
+\end{figure} 
+
+\subsection{가장 좋아하는 그림의 설명 및 좋아하는 이유 작성}
+Figure ~\ref{fig1} is the World Wide idol boy group BTS. This group is my first, and my last favorite artist. 
+\end{document}
