@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{kotex}
+
+
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\begin{document}
+
+\title{Binary Search in Python}
+\author{B711222 박조은}
+\date{April 2019}
+\maketitle
+
+\section{Introduction of the Problem}
+n1 = 15\\
+n2 = 1\\
+n3 = 37\\
+n4 = 61\\
+n5 = 26\\
+n6 = 59\\
+n7 = 48\\
+위와 같은 이진 트리를 생성하고 전위 순회, 중위 순회, 후위 순회 방식으로 각 방문 노드를 방문하고 방문 순서를 출력하라. \\
+(클래스로 구현할 것, 전위 순회, 중위 순회, 후위 순회는 함수 각각 따로 함수로 만들 것)
+\section{What is Traverse?}
+전위 순회 \\
+뿌리노드 → 왼쪽 서브트리 → 오른쪽 서브트리 순으로 순회한다. \\
+위의 트리의 경우 15 1 61 26 37 59 48 의 순서이다.\\
+\\
+중위 순회 \\
+왼쪽 서브트리 → 뿌리 노드 → 오른쪽 서브트리 순으로 순회한다. 위의 트리의 경우 61 1 26 15 59 37 48 의 순서이다.
+\\
+후위 순회\\
+왼쪽 서브 트리 → 오른쪽 서브트리 → 뿌리 노드 순으로 순회한다. 위의 트리의 경우 61 26 1 59 48 37 15 의 순서이다.
+
+\section{Explanation of the Code}
+노드 생성하는 클래스와 세 종류의 순회 함수를 갖는 클래스를 생성하고 함수를 호출한 뒤 결과값을 출력하는 소스코드를 작성하려고 노력했으나, 출력 결과에서 순회 값 마지막에 None 이라고 출력되는 부분은 수정하지 못했습니다.
+\end{document}
