@@ -296,9 +296,51 @@ declarator
 	| direct_declarator
 	;
 
+direct_declarator
+	: IDENTIFIER
+	{
+		if (check_pointer == 1)
+			pointer_count++;
+		check_pointer = 0;
+	}
+	| '(' declarator ')'
+	| direct_declarator '[' constant_expression ']'
+	{
+		check_array = 1;
+	}
+	| direct_declarator '[' ']'
+	{
+		check_array = 1;
+	}
+	| direct_declarator '(' parameter_type_list ')'
+	{
 
+	}
+	| direct_declarator '(' identifier_list ')'
+	| direct_declarator '(' ')'
+	;
 
+pointer
+	: '*'
+	| '*' type_qualifier_list
+	| '*' pointer
+	| '*' type_qualifier_list pointer
+	;
 
+type_qualifier_list
+	: type_qualifier
+	| type_qualifier_list type_qualifier
+	;
+
+parameter_type_list
+	: parameter_list
+	| parameter_list ',' ELLIPSIS
+	;
+
+parameter_list
+	: parameter_declaration
+	| parameter_list ',' parameter_declaration
+	;
 
 parameter_declaration
 	: declaration_specifiers declarator
@@ -318,3 +360,167 @@ identifier_list
 	: IDENTIFIER
 	| identifier_list ',' IDENTIFIER
 	;
+
+type_name
+	: specifier_qualifier_list
+	| specifier_qualifier_list abstract_declarator
+	;
+
+abstract_declarator
+	: pointer
+	| direct_abstract_declarator
+	| pointer direct_abstract_declarator
+	;
+
+direct_abstract_declarator
+	: '(' abstract_declarator ')'
+	| '[' ']'
+	| '[' constant_expression ']'
+	| direct_abstract_declarator '[' ']'
+	| direct_abstract_declarator '[' constant_expression ']'
+	| '(' ')'
+	| '(' parameter_type_list ')'
+	| direct_abstract_declarator '(' ')'
+	| direct_abstract_declarator '(' parameter_type_list ')'
+	;
+
+initializer
+	: assignment_expression
+	| '{' initializer_list '}'
+	| '[' initializer_list ']'
+	;
+
+initializer_list
+	: initializer
+	| initializer_list ',' initializer
+	;
+
+statement
+	: labeled_statement
+	| compound_statement
+	| expression_statement
+	| selection_statement
+	| iteration_statement
+	| jump_statement
+	;
+
+labeled_statement
+	: IDENTIFIER ':' statement
+	| CASE constant_expression ':' statement
+	| DEFAULT ':' statement
+	;
+
+compound_statement
+	: '{' '}'
+	| '{' statement_list '}'
+	| '{' declaration_list '}'
+	| '{' declaration_list statement_list '}'
+	;
+
+declaration_list
+	: declaration
+	| declaration_list declaration
+	;
+
+statement_list
+	: statement
+	| statement_list statement
+	;
+
+expression_statement
+	: ';'
+	| expression ';'
+	;
+
+selection_statement
+	: IF '(' expression ')' statement {select_count++;}
+	| SWITCH '(' expression ')' statement {select_count++;}
+	;
+
+iteration_statement
+	: WHILE '(' expression ')' statement {loop_count++;}
+	| DO statement WHILE '(' expression ')' ';' {loop_count++;}
+	| FOR '(' expression_statement expression_statement ')' statement {loop_count++;}
+	| FOR '(' expression_statement expression_statement expression ')' statement {loop_count++;}
+	;
+
+jump_statement
+	: GOTO IDENTIFIER ';'
+	| CONTINUE ';'
+	| BREAK ';'
+	| RETURN ';' {return_count++;}
+	| RETURN expression ';' {return_count++;}
+	;
+
+external_declaration
+	: '#' IDENTIFIER IDENTIFIER CONSTANT
+	| '#' IDENTIFIER '<' IDENTIFIER '.' IDENTIFIER '>'
+	| function_definition
+	| declaration
+	;
+
+start_state
+	: external_declaration
+	| start_state external_declaration
+	;
+
+function_definition
+	: declaration_specifiers declarator declaration_list compound_statement
+	{
+		func_count++;
+		if (check_pointer == 1)
+			pointer_count--;
+		check_pointer = 0;
+	}
+	| declaration_specifiers declarator compound_statement
+	{
+		func_count++;
+		if (check_pointer == 1)
+			pointer_count--;
+		check_pointer = 0;
+	}
+	| declarator declaration_list compound_statement
+	{
+		func_count++;
+		if (check_pointer == 1)
+			pointer_count--;
+		check_pointer = 0;
+	}
+	| declarator compound_statement
+	{
+		func_count++;
+		if (check_pointer == 1)
+			pointer_count--;
+		check_pointer = 0;
+	}
+	;
+
+%%
+#include <stdio.h>
+
+extern char yytext[];
+extern int column;
+
+yyerror(s)
+char *s;
+{
+	fflush(stdout);
+	printf("\n%*s\n%*s\n", column, "*", column, s);
+}
+
+int main(void)
+{
+	yyparse();
+
+	printf("합수 = %d\n", func_count);
+	printf("수식 = %d\n", exp_count);
+	printf("int 변수 선언 = %d\n", int_count);
+	printf("char 변수 선언 = %d\n", char_count);
+	printf("pointer 변수 선언 = %d\n", pointer_count);
+	printf("배열 변수 선언 = %d\n", array_count);
+	printf("선택문 = %d\n", select_count);
+	printf("반복문 = %d\n", loop_count);
+	printf("리턴문 = %d\n", return_count);
+
+	return 0;
+}
